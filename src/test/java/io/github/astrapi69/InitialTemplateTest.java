@@ -19,13 +19,13 @@ class InitialTemplateTest
 
 	public static final String KOTLIN_LIBRARY_TEMPLATE_NAME = "kotlin-library-template";
 	@Test
-//	@Disabled
+	@Disabled
 	public void testRenameToConcreteProject() throws IOException
 	{
 		String projectDescription;
 		// TODO change the following description with your project description
 		// and then remove the annotation Disabled and run this unit test method
-		projectDescription = "Template project for create kotlin library projects";
+		projectDescription = "!!!Chage this description with your project description!!!";
 		renameToConcreteProject(projectDescription);
 	}
 
@@ -74,7 +74,7 @@ class InitialTemplateTest
 
 		ModifyFileExtensions.modifyFile(gradleProperties.toPath(), (count, input) -> {
 			return input
-				.replaceAll("projectDescription=Template project for create java library projects",
+				.replaceAll("projectDescription=Template project for create kotlin library projects",
 					"projectDescription=" + projectDescription) + System.lineSeparator();
 		});
 
@@ -87,13 +87,13 @@ class InitialTemplateTest
 
 		ModifyFileExtensions.modifyFile(readme.toPath(), (count, input) -> {
 			return input
-				.replaceAll("Template project for create java library projects",
+				.replaceAll("Template project for create kotlin library projects",
 					projectDescription) + System.lineSeparator();
 		});
 
 		ModifyFileExtensions.modifyFile(readme.toPath(), (count, input) -> {
 			return input
-				.replaceAll("javaLibraryTemplateVersion",
+				.replaceAll("kotlinLibraryTemplateVersion",
 					GradleRunConfigurationsCopier.getProjectVersionKeyName(concreteProjectName)) + System.lineSeparator();
 		});
 
@@ -115,7 +115,7 @@ class InitialTemplateTest
 		// delete template run configurations
 		RuntimeExceptionDecorator.decorate(() -> DeleteFileExtensions
 			.deleteFilesWithFileFilter(copyGradleRunConfigurationsData.getIdeaTargetDir(),
-				new PrefixFileFilter("java_library_template", false)));
+				new PrefixFileFilter("kotlin_library_template", false)));
 	}
 
 }
