@@ -1,24 +1,21 @@
+package io.github.astrapi69
+
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Disabled
-import kotlin.Throws
-import java.io.IOException
 import io.github.astrapi69.search.PathFinder
 import io.github.astrapi69.gradle.migration.data.DependenciesInfo
 import io.github.astrapi69.modify.ModifyFileExtensions
-import io.github.astrapi69.modify.api.FileChangeable
 import io.github.astrapi69.delete.DeleteFileExtensions
 import io.github.astrapi69.gradle.migration.data.GradleRunConfigurationsCopier
 import io.github.astrapi69.gradle.migration.data.CopyGradleRunConfigurations
 import io.github.astrapi69.io.file.filter.PrefixFileFilter
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator
 import java.lang.Exception
-import io.github.astrapi69.throwable.api.ThrowableNoArgumentConsumer
 import java.io.File
 
-internal class InitialTemplateTest {
+internal class InitialKotlinTemplateTest {
     @Test
-//    @Disabled
-    @Throws(IOException::class)
+    @Disabled
     fun testRenameToConcreteProject() {
         val projectDescription: String
         // TODO change the following description with your project description
@@ -27,7 +24,6 @@ internal class InitialTemplateTest {
         renameToConcreteProject(projectDescription)
     }
 
-    @Throws(IOException::class)
     private fun renameToConcreteProject(projectDescription: String) {
         val concreteProjectName: String
         val templateProjectName: String
@@ -40,7 +36,7 @@ internal class InitialTemplateTest {
         val initialTemplateClassFile: File
         //
         sourceProjectDir = PathFinder.getProjectDirectory()
-        templateProjectName = "kotlin-library-template"
+        templateProjectName = KOTLIN_LIBRARY_TEMPLATE_NAME
         concreteProjectName = sourceProjectDir.name
         // adapt settings.gradle file
         settingsGradle = File(sourceProjectDir, DependenciesInfo.SETTINGS_GRADLE_FILENAME)
@@ -68,17 +64,12 @@ internal class InitialTemplateTest {
                 "InitialTemplate.java"
             )
         DeleteFileExtensions.delete(initialTemplateClassFile)
-        DeleteFileExtensions.delete(PathFinder
-            .getRelativePath(
-                PathFinder.getSrcMainJavaDir(), "io", "github", "astrapi69",
-                "InitialKotlinTemplate.kt"
-            ))
         // change projectDescription from gradle.properties
         val gradleProperties = File(sourceProjectDir, DependenciesInfo.GRADLE_PROPERTIES_NAME)
         ModifyFileExtensions.modifyFile(gradleProperties.toPath()) { count: Int?, input: String ->
             input
                 .replace(
-                    "projectDescription=Template project for create java library projects".toRegex(),
+                    "projectDescription=Template project for create kotlin library projects".toRegex(),
                     "projectDescription=$projectDescription"
                 ) + System.lineSeparator()
         }
@@ -92,14 +83,14 @@ internal class InitialTemplateTest {
         ModifyFileExtensions.modifyFile(readme.toPath()) { count: Int?, input: String ->
             input
                 .replace(
-                    "Template project for create java library projects".toRegex(),
+                    "Template project for create kotlin library projects".toRegex(),
                     projectDescription
                 ) + System.lineSeparator()
         }
         ModifyFileExtensions.modifyFile(readme.toPath()) { count: Int?, input: String ->
             input
                 .replace(
-                    "javaLibraryTemplateVersion".toRegex(),
+                    "kotlinLibraryTemplateVersion".toRegex(),
                     GradleRunConfigurationsCopier.getProjectVersionKeyName(concreteProjectName)
                 ) + System.lineSeparator()
         }
@@ -126,8 +117,12 @@ internal class InitialTemplateTest {
             DeleteFileExtensions
                 .deleteFilesWithFileFilter(
                     copyGradleRunConfigurationsData.ideaTargetDir,
-                    PrefixFileFilter("java_library_template", false)
+                    PrefixFileFilter("kotlin_library_template", false)
                 )
         }
+    }
+
+    companion object {
+        const val KOTLIN_LIBRARY_TEMPLATE_NAME = "kotlin-library-template"
     }
 }
