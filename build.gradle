@@ -49,16 +49,6 @@ tasks.withType(JavaCompile) {
     // options.compilerArgs << "-Xlint:unchecked"
 }
 
-import org.jetbrains.dokka.gradle.DokkaTask
-
-task dokkaJavadoc(type: DokkaTask) {
-    outputFormat = "html"
-    outputDirectory = javadoc.destinationDir
-    inputs.dir "src/main/java"
-}
-
-javadocJar.dependsOn dokkaJavadoc
-
 compileKotlin {
     kotlinOptions {
         jvmTarget = "11"
