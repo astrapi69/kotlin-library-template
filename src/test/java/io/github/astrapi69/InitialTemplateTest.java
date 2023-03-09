@@ -1,23 +1,25 @@
 package io.github.astrapi69;
 
-import io.github.astrapi69.delete.DeleteFileExtensions;
+import java.io.File;
+import java.io.IOException;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.modify.ModifyFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.gradle.migration.data.CopyGradleRunConfigurations;
 import io.github.astrapi69.gradle.migration.data.DependenciesInfo;
 import io.github.astrapi69.gradle.migration.data.GradleRunConfigurationsCopier;
 import io.github.astrapi69.io.file.filter.PrefixFileFilter;
-import io.github.astrapi69.modify.ModifyFileExtensions;
-import io.github.astrapi69.search.PathFinder;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
 
 class InitialTemplateTest
 {
 
 	public static final String KOTLIN_LIBRARY_TEMPLATE_NAME = "kotlin-library-template";
+
 	@Test
 	@Disabled
 	public void testRenameToConcreteProject() throws IOException
@@ -47,54 +49,52 @@ class InitialTemplateTest
 		// adapt settings.gradle file
 		settingsGradle = new File(sourceProjectDir, DependenciesInfo.SETTINGS_GRADLE_FILENAME);
 		ModifyFileExtensions.modifyFile(settingsGradle.toPath(), (count, input) -> {
-			return input.replaceAll(templateProjectName, concreteProjectName) + System
-				.lineSeparator();
+			return input.replaceAll(templateProjectName, concreteProjectName)
+				+ System.lineSeparator();
 		});
 		// adapt CODE_OF_CONDUCT.md file
 		dotGithubDir = new File(sourceProjectDir, DependenciesInfo.DOT_GITHUB_DIRECTORY_NAME);
 		codeOfConduct = new File(dotGithubDir, DependenciesInfo.CODE_OF_CONDUCT_FILENAME);
 		ModifyFileExtensions.modifyFile(codeOfConduct.toPath(), (count, input) -> {
-			return input.replaceAll(templateProjectName, concreteProjectName) + System
-				.lineSeparator();
+			return input.replaceAll(templateProjectName, concreteProjectName)
+				+ System.lineSeparator();
 		});
 		// adapt .travis.yml file
 		dotTravisYml = new File(sourceProjectDir, DependenciesInfo.DOT_TRAVIS_FILENAME);
 		ModifyFileExtensions.modifyFile(dotTravisYml.toPath(), (count, input) -> {
-			return input.replaceAll(templateProjectName, concreteProjectName) + System
-				.lineSeparator();
+			return input.replaceAll(templateProjectName, concreteProjectName)
+				+ System.lineSeparator();
 		});
 		// delete template class
-		initialTemplateClassFile = PathFinder
-			.getRelativePath(PathFinder.getSrcMainJavaDir(), "io", "github", "astrapi69",
-				"InitialTemplate.java");
+		initialTemplateClassFile = PathFinder.getRelativePath(PathFinder.getSrcMainJavaDir(), "io",
+			"github", "astrapi69", "InitialTemplate.java");
 
 		DeleteFileExtensions.delete(initialTemplateClassFile);
 		// change projectDescription from gradle.properties
 		File gradleProperties = new File(sourceProjectDir, DependenciesInfo.GRADLE_PROPERTIES_NAME);
 
 		ModifyFileExtensions.modifyFile(gradleProperties.toPath(), (count, input) -> {
-			return input
-				.replaceAll("projectDescription=Template project for create kotlin library projects",
-					"projectDescription=" + projectDescription) + System.lineSeparator();
+			return input.replaceAll(
+				"projectDescription=Template project for create kotlin library projects",
+				"projectDescription=" + projectDescription) + System.lineSeparator();
 		});
 
 		// adapt README.md file
 		readme = new File(sourceProjectDir, DependenciesInfo.README_FILENAME);
 		ModifyFileExtensions.modifyFile(readme.toPath(), (count, input) -> {
-			return input.replaceAll(templateProjectName, concreteProjectName) + System
-				.lineSeparator();
+			return input.replaceAll(templateProjectName, concreteProjectName)
+				+ System.lineSeparator();
 		});
 
 		ModifyFileExtensions.modifyFile(readme.toPath(), (count, input) -> {
-			return input
-				.replaceAll("Template project for create kotlin library projects",
-					projectDescription) + System.lineSeparator();
+			return input.replaceAll("Template project for create kotlin library projects",
+				projectDescription) + System.lineSeparator();
 		});
 
 		ModifyFileExtensions.modifyFile(readme.toPath(), (count, input) -> {
-			return input
-				.replaceAll("kotlinLibraryTemplateVersion",
-					GradleRunConfigurationsCopier.getProjectVersionKeyName(concreteProjectName)) + System.lineSeparator();
+			return input.replaceAll("kotlinLibraryTemplateVersion",
+				GradleRunConfigurationsCopier.getProjectVersionKeyName(concreteProjectName))
+				+ System.lineSeparator();
 		});
 
 		// create run configurations for current project
@@ -113,9 +113,9 @@ class InitialTemplateTest
 		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
 
 		// delete template run configurations
-		RuntimeExceptionDecorator.decorate(() -> DeleteFileExtensions
-			.deleteFilesWithFileFilter(copyGradleRunConfigurationsData.getIdeaTargetDir(),
-				new PrefixFileFilter("kotlin_library_template", false)));
+		RuntimeExceptionDecorator.decorate(() -> DeleteFileExtensions.deleteFilesWithFileFilter(
+			copyGradleRunConfigurationsData.getIdeaTargetDir(),
+			new PrefixFileFilter("kotlin_library_template", false)));
 	}
 
 }
