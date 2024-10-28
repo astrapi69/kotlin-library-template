@@ -59,22 +59,22 @@ class InitialTemplateTest
 		// adapt settings.gradle file
 		settingsGradle = new File(sourceProjectDir, DependenciesInfo.SETTINGS_GRADLE_FILENAME);
 		ModifyFileExtensions.modifyFile(settingsGradle.toPath(),
-				(count, input) -> input.replaceAll(templateProjectName, concreteProjectName)
-						+ System.lineSeparator());
+			(count, input) -> input.replaceAll(templateProjectName, concreteProjectName)
+				+ System.lineSeparator());
 		// adapt CODE_OF_CONDUCT.md file
 		dotGithubDir = new File(sourceProjectDir, DependenciesInfo.DOT_GITHUB_DIRECTORY_NAME);
 		codeOfConduct = new File(dotGithubDir, DependenciesInfo.CODE_OF_CONDUCT_FILENAME);
 		ModifyFileExtensions.modifyFile(codeOfConduct.toPath(),
-				(count, input) -> input.replaceAll(templateProjectName, concreteProjectName)
-						+ System.lineSeparator());
+			(count, input) -> input.replaceAll(templateProjectName, concreteProjectName)
+				+ System.lineSeparator());
 		// delete template class
 		initialTemplateClassFile = PathFinder.getRelativePath(PathFinder.getSrcMainJavaDir(), "io",
-				"github", "astrapi69", "InitialTemplate.java");
+			"github", "astrapi69", "InitialTemplate.java");
 
 		DeleteFileExtensions.delete(initialTemplateClassFile);
 		// change projectDescription from gradle.properties
 		File gradleProperties = FileFactory.newFile(sourceProjectDir,
-				DependenciesInfo.GRADLE_PROPERTIES_FILENAME);
+			DependenciesInfo.GRADLE_PROPERTIES_FILENAME);
 
 		ModifyFileExtensions.modifyFile(gradleProperties.toPath(), (count, input) -> {
 			return input.replaceAll(
@@ -85,23 +85,26 @@ class InitialTemplateTest
 		// adapt README.md file
 		readme = new File(sourceProjectDir, DependenciesInfo.README_FILENAME);
 		ModifyFileExtensions.modifyFile(readme.toPath(),
-				(count, input) -> input.replaceAll(templateProjectName, concreteProjectName)
-						+ System.lineSeparator());
+			(count, input) -> input.replaceAll(templateProjectName, concreteProjectName)
+				+ System.lineSeparator());
 
 		ModifyFileExtensions.modifyFile(readme.toPath(),
+			(count,
+				input) -> input.replaceAll(templateProjectWithDotsName, concreteProjectWithDotsName)
+					+ System.lineSeparator());
+
+		ModifyFileExtensions
+			.modifyFile(readme.toPath(),
 				(count,
-				 input) -> input.replaceAll(templateProjectWithDotsName, concreteProjectWithDotsName)
+					input) -> input.replaceAll(
+						"Template project for create kotlin library projects", projectDescription)
 						+ System.lineSeparator());
 
 		ModifyFileExtensions.modifyFile(readme.toPath(),
-				(count, input) -> input.replaceAll("Template project for create kotlin library projects",
-						projectDescription) + System.lineSeparator());
-
-		ModifyFileExtensions.modifyFile(readme.toPath(),
-				(count,
-				 input) -> input.replaceAll("kotlinLibraryTemplateVersion",
-						DependenciesExtensions.getProjectVersionKeyName(concreteProjectName))
-						+ System.lineSeparator());
+			(count,
+				input) -> input.replaceAll("kotlinLibraryTemplateVersion",
+					DependenciesExtensions.getProjectVersionKeyName(concreteProjectName))
+					+ System.lineSeparator());
 
 		// create run configurations for current project
 		String sourceProjectDirNamePrefix;
@@ -114,14 +117,14 @@ class InitialTemplateTest
 		sourceProjectDirNamePrefix = sourceProjectDir.getParent() + "/";
 		targetProjectDirNamePrefix = sourceProjectDirNamePrefix;
 		copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
-				.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
-						sourceProjectDirNamePrefix, targetProjectDirNamePrefix, true, true);
+			.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
+				sourceProjectDirNamePrefix, targetProjectDirNamePrefix, true, true);
 		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
 
 		// delete template run configurations
 		RuntimeExceptionDecorator.decorate(() -> DeleteFileExtensions.deleteFilesWithFileFilter(
-				copyGradleRunConfigurationsData.getIdeaTargetDir(),
-				new PrefixFileFilter("kotlin_library_template", false)));
+			copyGradleRunConfigurationsData.getIdeaTargetDir(),
+			new PrefixFileFilter("kotlin_library_template", false)));
 
 		// remove section 'Template from this project'
 		removeTemplateSection(readme);
@@ -131,9 +134,9 @@ class InitialTemplateTest
 	private static void removeTemplateSection(File readme) throws IOException
 	{
 		int startLineIndex = FileSearchExtensions.findLineIndex(readme,
-				"# Template from this project");
+			"# Template from this project");
 		int endLineIndex = FileSearchExtensions.findLineIndex(readme,
-				"this [medium blog](https://asterios-raptis.medium.com/new-github-template-repository-feature-ec09afe261b8)");
+			"this [medium blog](https://asterios-raptis.medium.com/new-github-template-repository-feature-ec09afe261b8)");
 		endLineIndex = endLineIndex + 1;
 		Integer[] deleteRangeArray = ArrayFactory.newRangeArray(startLineIndex, endLineIndex);
 		List<Integer> lineIndexesToDelete = ArrayExtensions.toList(deleteRangeArray);
