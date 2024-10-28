@@ -58,23 +58,23 @@ functionality of kotlin-library-template:
 
 Than you can add the dependency to your dependencies:
 
-	<properties>
-			...
-		<!-- kotlin-library-template version -->
-		<kotlin-library-template.version>1</kotlin-library-template.version>
-			...
-	</properties>
-			...
-		<dependencies>
-			...
-			<!-- kotlin-library-template DEPENDENCY -->
-			<dependency>
-				<groupId>io.github.astrapi69</groupId>
-				<artifactId>kotlin-library-template</artifactId>
-				<version>${kotlin-library-template.version}</version>
-			</dependency>
-			...
-		</dependencies>
+    <properties>
+            ...
+        <!-- kotlin-library-template version -->
+        <kotlin-library-template.version>1</kotlin-library-template.version>
+            ...
+    </properties>
+            ...
+        <dependencies>
+            ...
+            <!-- kotlin-library-template DEPENDENCY -->
+            <dependency>
+                <groupId>io.github.astrapi69</groupId>
+                <artifactId>kotlin-library-template</artifactId>
+                <version>${kotlin-library-template.version}</version>
+            </dependency>
+            ...
+        </dependencies>
 
 ## gradle dependency
 
@@ -90,9 +90,9 @@ or in build.gradle ext area
 
 ```
 ext {
-			...
+            ...
     kotlinLibraryTemplateVersion = "1"
-			...
+            ...
 }
 ```
 
@@ -100,9 +100,9 @@ and than add the dependency to the dependencies area
 
 ```
 dependencies {
-			...
+            ...
     implementation("io.github.astrapi69:kotlin-library-template:kotlinLibraryTemplateVersion")
-			...
+            ...
 }
 ```
 
@@ -134,4 +134,3 @@ Do not hesitate to contact the kotlin-library-template developers with your ques
 ## Similar projects
 
 ## Credits
-
