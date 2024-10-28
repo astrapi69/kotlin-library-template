@@ -1,10 +1,5 @@
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    testImplementation("io.github.astrapi69:silly-io:$sillyIoVersion")
-    testImplementation("io.github.astrapi69:file-worker:$fileWorkerVersion")
-    testImplementation("io.github.astrapi69:throwable:$throwableVersion")
-    testImplementation("io.github.astrapi69:gradle-migration-data:$gradleMigrationDataVersion")
-    testImplementation("org.apache.commons:commons-text:$commonsTextVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+    // Note: use of bundles...
+    testImplementation libs.bundles.unit.testing
+    testRuntimeOnly libs.bundles.test.runtime.only
 }

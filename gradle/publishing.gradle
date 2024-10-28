@@ -1,10 +1,5 @@
 def releaseVersion = !version.endsWith("SNAPSHOT")
 
-tasks.withType(GenerateModuleMetadata) {
-    enabled = false
-}
-
-
 task sourcesJar(type: Jar) {
     archiveClassifier.set("sources")
     from(sourceSets.main.allJava)
@@ -13,21 +8,9 @@ task sourcesJar(type: Jar) {
 task javadocJar(type: Jar) {
     from javadoc
     archiveClassifier.set("javadoc")
-    javadoc.properties.failOnError = true
-}
-
-javadocJar.dependsOn dokkaJavadoc
-
-tasks.register('dokkaHtmlJar', Jar.class) {
-    dependsOn(dokkaHtml)
-    from(dokkaHtml)
-    archiveClassifier.set("html-docs")
-}
-
-tasks.register('dokkaJavadocJar', Jar.class) {
-    dependsOn(dokkaJavadoc)
-    from(dokkaJavadoc)
-    archiveClassifier.set("javadoc")
+    javadoc {
+        failOnError = false
+    }
 }
 
 javadoc {
@@ -83,8 +66,8 @@ publishing {
                 username System.getenv("$projectRepositoriesUserNameKey") ?: project.property("$projectRepositoriesUserNameKey")
                 password System.getenv("$projectRepositoriesPasswordKey") ?: project.property("$projectRepositoriesPasswordKey")
             }
-            def releasesRepoUrl = "$projectRepositoriesReleasesRepoUrl"
-            def snapshotsRepoUrl = "$projectRepositoriesSnapshotsRepoUrl"
+            def releasesRepoUrl = "$projectRepositoriesReleasesRepoUrl" as Object
+            def snapshotsRepoUrl = "$projectRepositoriesSnapshotsRepoUrl" as Object
             url = releaseVersion ? releasesRepoUrl : snapshotsRepoUrl
         }
     }

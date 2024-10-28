@@ -12,7 +12,6 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'signing'
-    alias(libs.plugins.dokka.gradle.plugin)
     alias(libs.plugins.gradle.versions.plugin)
     alias(libs.plugins.grgit.gradle)
     alias(libs.plugins.kotlin.gradle.plugin)
@@ -35,18 +34,41 @@ java {
     }
 }
 
-tasks.named("test") {
-    it.mustRunAfter(tasks.named("jar"))
-}
-
-tasks.withType(GenerateModuleMetadata) {
-    enabled = false
-}
-
 tasks.withType(JavaCompile).configureEach { javaCompiler ->
     options.encoding = "UTF-8"
     // uncomment the next line for build with compiler argument -Xlint:deprecation
     // options.compilerArgs << "-Xlint:deprecation"
     // uncomment the next line for build with compiler argument -Xlint:unchecked
     // options.compilerArgs << "-Xlint:unchecked"
+}
+
+sourceSets {
+    test {
+        java.srcDirs = ['src/test/java']
+        kotlin.srcDirs = ['src/test/kotlin']
+    }
+}
+tasks.withType(Test) {
+    maxParallelForks = 1
+}
+
+tasks.named("compileTestJava").configure {
+    dependsOn.clear()
+}
+
+tasks.named("compileTestKotlin").configure {
+    dependsOn.clear()
+}
+
+tasks.named("jar").configure {
+    dependsOn.clear()
+}
+
+tasks.named("test").configure {
+    dependsOn.clear()
+    dependsOn "compileTestJava", "compileTestKotlin"
+}
+tasks.named("testClasses").configure {
+    dependsOn.clear()
+    dependsOn "compileTestJava", "compileTestKotlin"
 }

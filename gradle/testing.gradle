@@ -1,5 +1,6 @@
 test {
     useJUnitPlatform()
+    jvmArgs "-Xshare:off";
 }
 
 jacocoTestReport {
